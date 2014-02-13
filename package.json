@@ -1,0 +1,10 @@
+{
+    "name": "FabelierDoorBell",
+    "version": "0.0.1",
+    "description": "Door bell for Fabelier",
+    "dependencies": {
+        "socket.io": "latest",
+        "express": "latest"
+    },
+    "author": "A.Faraino"
+}

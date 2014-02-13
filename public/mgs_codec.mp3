@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="robots" content="index, follow" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="language" content="fr" />
+  <meta name="google" content="notranslate" />
+  <title>Convertisseur YouTube vers mp3</title>
+  <link rel="stylesheet" href="/style.css" />
+
+  <script type="text/javascript" src="/lang/fr.js/71.js"></script>
+  
+  <script type="text/javascript" src="/client.js/71.js"></script>
+  
+  
+  <script type="text/javascript">
+    // y
+    adcc = '7ca7157';
+    enableBetaAds = true;
+    
+    // ga
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9749996-5']);
+    _gaq.push(['_trackPageview']); //
+    var _acb = null;
+
+    function acb() {
+        try {
+            // ga
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); //
+
+            if (_acb != null)
+                _acb();
+        } catch (e) {}
+    }
+  </script>
+  
+    
+        
+            <script type="text/javascript">
+                ggv2id='338d2e1e';
+                
+                _acb = function() {
+                    var gg = document.createElement('script'); gg.type = 'text/javascript'; gg.async = true;
+                    gg.src = 'http://g2.gumgum.com/javascripts/ggv2.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gg, s);
+                }
+            </script>
+    
+</head>
+
+<body onload="init(); loadAds(); acb()">
+
+<div id="content" style="width:700px; padding-left:160px;">  
+  <div style="width:480px; float:left;">
+  <h1><a href="/fr"><img src="/logo.gif" alt="YouTube mp3" width="290" height="59" /></a></h1>
+  
+  <div id="progress_info">
+    <div id="error_text"></div>
+    <div id="image"></div>
+    <div style="float:left; max-width:330px">
+      <div id="status_text"></div>
+      <div id="title"></div>
+      <div id="length"></div>
+      <div id="link_box" style="display:none">
+        <div id="link_box_title" style="font-weight:bold; text-decoration:underline"></div>
+        <div class="row">
+          <div id="link_box_bb_code_title" style="font-weight:bold"></div>
+          <input type="text" id="BBCodeLink" onclick="sAll(this)" />
+        </div>
+        <div class="row">
+          <div id="link_box_html_code_title" style="font-weight:bold"></div>
+          <input type="text" id="HTMLLink" onclick="sAll(this)" />
+        </div>
+        <div class="row">
+          <div id="link_box_direct_code_title" style="font-weight:bold"></div>
+          <input type="text" id="DirectLink" onclick="sAll(this)" />
+        </div>
+      </div>
+      <div id="dl_link"></div>
+      <div id="progress"></div>
+      <div id="loader"><img src="ajax-loader-b.gif" alt="loading.." width="16" height="11" /></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  
+  <noscript>
+    <div class="warning">You have to enable JavaScript to use this Service!</div>
+  </noscript>
+  
+  <div id="form">
+    <form method="get" action="/" id="submit-form">
+      <input type="text" id="youtube-url" value="http://www.youtube.com/watch?v=KMU0tzLwhbE" onclick="sAll(this)" autocomplete="off" style="width:466px;" />
+      <div style="text-align:center; margin-top:3px">
+        <input type="submit" id="submit" value="Convertir la vidéo" style="float:none;" disabled="disabled" />
+      </div>
+    </form>
+  </div>
+  
+  
+    
+        <div style="margin-top:43px; text-align:center; padding:5px 0; background:#eee; border-top:solid 1px #ccc;" id="rad">
+        </div>
+    
+  
+
+    
+    
+  <div class="clear"></div>
+
+  <div id="description">
+    <h2>Qu’est-ce que `YouTube mp3´?</h2>
+    <p>YouTube-mp3.org est le service en ligne le plus simple qui soit pour convertir des vidéos en mp3. Pas besoin de créer un compte, la seule chose qu’il vous faut est l’adresse (URL) d’une vidéo YouTube. La conversion est lancée dès que vous nous soumettez l’adresse de la vidéo, ensuite il vous suffira de télécharger le mp3 que nous aurons créé. A la différence d’autres services, l’intégralité du processus de conversion est effectué au sein de notre infrastructure, vous n’avez qu’à télécharger le fichier audio alors stocké sur nos serveurs. Ainsi, notre service est multi-platforme : vous pouvez l’utiliser sur votre Mac, un PC sous Linux ou même un iPhone. Toutes nos conversions sont effectuées en mode haute qualité avec un taux d’échantillonage égal ou supérieur à 128 kBit/s. Ne vous inquiétez pas, notre service est entièrement gratuit. Il nécessite approximativement 3 à 4 minutes par vidéo.</p>
+    <p style="color:#969696">Thanks to Julien Guesdon for his translation!</p>
+  </div>
+
+  <div id="footer">
+    <div style="float:right; text-align:right">
+      <a href="http://blog.youtube-mp3.org/">Blog</a> &middot; <a href="/addons">Addons</a> &middot; <a href="/privacy" rel="nofollow">Privacy</a> &middot; <a href="/impress?" rel="nofollow">Impress</a>
+    </div>
+    <a href="/">English</a> &middot; <a href="/de">Deutsch</a> &middot; <a href="/tr">Türkçe</a> &middot; <a href="/pl">Polski</a> &middot; <a href="/fr">Français</a> &middot; <a href="/ka">ქართული</a><br /><a href="/eu">Euskara</a> &middot; <a href="/es">Español</a> &middot; <a href="/gr">Ελληνικά</a> &middot; <a href="/nl">Nederlands</a> &middot; <a href="/zh">繁體中文</a><br /><a href="/it">Italiano</a> &middot; <a href="/sv">Svenska</a> &middot; <a href="/sk">Slovensky</a> &middot; <a href="/sr">Српски</a> &middot; <a href="/ar">العربية</a><br /><a href="/pt">Português</a> &middot; <a href="/sl">Slovenščina</a> &middot; <a href="/ua">українська</a> &middot; <a href="/ru">Русский</a> <br /> <a href="/da">Dansk</a> &middot; <a href="/fi">suomi</a> &middot; <a href="/jp">日本語</a> &middot; <a href="/no">Norsk</a> &middot; <a href="/ko">한국어</a>
+
+  </div>
+  </div>
+  
+  
+    
+      <div style="float:left; width:160px; padding:5px; background:#eee; border-left:solid 1px #ccc; border-top:solid 1px #ccc; margin-left:15px; text-align:left" id="sad">
+      </div>
+    
+  
+</div>
+
+<script type="text/javascript">
+  function fc(){
+      try{
+      if (top.location != location) {
+        bFrame = true;
+        var i = new Image();
+        i.src = '/_stat.gif?i='+document.referrer;
+      }
+      } catch(e){}
+  }
+  fc();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fabelier Doorbell</title>
+<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+<img src="http://fabelier.org/f/Sticker0.png" style="float: left; padding-right: 50px" alt="logo"><br/>
+<div id=content>
+<h1>Fabelier door bell</h1>
+Please, ring here ...and wait, please :)<br/>
+<br/>
+<input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
+
+</div>
+
+<script>
+window.onload = function() {
+
+    var messages = [];
+    var socket = io.connect('http://door.fabelier.org/');
+    var bellButton = document.getElementById("bell");
+
+    bellButton.onclick = function() {
+        socket.emit('ring', { message: "Someone's here!" });
+    };
+}
+
+</script>
+</body>
+</html>
