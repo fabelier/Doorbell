@@ -25,7 +25,7 @@ State : <input id=state type=text value="deco"><br/>
 window.onload = function() {
 
     var messages = [];
-    var socket = io.connect('http://door.fabelier.org/');
+    var socket = io.connect('http://{{url}}');
     var sendButton = document.getElementById("ack");
     var content = document.getElementById("content");
     var state = document.getElementById("state");

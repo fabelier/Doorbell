@@ -1,18 +1,31 @@
 // Init Express Framework
 var express = require("express");
+var fs = require("fs");
+var mustache = require("mustache");
+var config = require("./config");
 var app = express();
-var port = 8081;
+var port = config.node_port;
+var url = config.host + ":" + (config.reverse_proxy ? config.reverse_proxy_port : port);
 
 // == Routing request ==
 // / is the ringbell URL
 app.get("/", function(req, res){
-    res.sendfile("ring.html");
+    sendTemplatedFile(req, res, "ring.html");
 });
 
 // /monitor is for the host
 app.get("/monitor", function(req, res){
-    res.sendfile("monitor.html");
+    sendTemplatedFile(req, res, "monitor.html");
 });
+
+function sendTemplatedFile(req, res, filename){
+    fs.readFile(filename, function(err, data){
+       res.set('Content-Type', 'text/html');
+       if (err) res.send(err);
+       res.send(mustache.render(data.toString(), {url: url}));
+    })
+
+}
 
 // Static files in /public
 app.use(express.static(__dirname + '/public'));

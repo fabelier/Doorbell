@@ -19,7 +19,7 @@ Please, ring here ...and wait, please :)<br/>
 window.onload = function() {
 
     var messages = [];
-    var socket = io.connect('http://door.fabelier.org/');
+    var socket = io.connect('http://{{url}}');
     var bellButton = document.getElementById("bell");
 
     bellButton.onclick = function() {
