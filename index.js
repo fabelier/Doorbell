@@ -2,10 +2,11 @@
 var express = require("express");
 var fs = require("fs");
 var mustache = require("mustache");
+mustache.escape = function(string){return string;}
 var config = getConfig();
 var app = express();
 var port = config.node_port;
-var url = config.host + ":" + (config.reverse_proxy ? config.reverse_proxy_port : port);
+var url = config.url + ":" + (config.reverse_proxy ? config.reverse_proxy_port : port);
 
 function getConfig(){
   if (!fs.existsSync("config.js")) {
