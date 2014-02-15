@@ -48,7 +48,7 @@ function sendTemplatedFile(req, res, filename){
     fs.readFile(filename, function(err, data){
        res.set('Content-Type', 'text/html');
        if (err) res.send(err);
-       res.send(mustache.render(data.toString(), {url: url}));
+       res.send(mustache.render(data.toString(), {url: url, logo_url: config.logo_url}));
     })
 }
 
