@@ -2,10 +2,35 @@
 var express = require("express");
 var fs = require("fs");
 var mustache = require("mustache");
-var config = require("./config");
+var config = getConfig();
 var app = express();
 var port = config.node_port;
 var url = config.host + ":" + (config.reverse_proxy ? config.reverse_proxy_port : port);
+
+function getConfig(){
+  if (!fs.existsSync("config.js")) {
+    synchronousCopy("config.js.template", "config.js");
+    console.log("Copying default config file. You may want to adapt config.js");
+  }
+  return require("./config.js");
+}
+
+function synchronousCopy(srcFile, destFile){
+  var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
+  BUF_LENGTH = 64 * 1024;
+  buff = new Buffer(BUF_LENGTH);
+  fdr = fs.openSync(srcFile, "r");
+  fdw = fs.openSync(destFile, "w");
+  bytesRead = 1;
+  pos = 0;
+  while (bytesRead > 0) {
+    bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
+    fs.writeSync(fdw, buff, 0, bytesRead);
+    pos += bytesRead;
+  }
+  fs.closeSync(fdr);
+  return fs.closeSync(fdw);
+}
 
 // == Routing request ==
 // / is the ringbell URL
@@ -24,7 +49,6 @@ function sendTemplatedFile(req, res, filename){
        if (err) res.send(err);
        res.send(mustache.render(data.toString(), {url: url}));
     })
-
 }
 
 // Static files in /public
