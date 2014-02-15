@@ -12,6 +12,7 @@ Socket.io website was a great help. Thanks to the team :)
 ### Try it on door.mydomain.tld
 1. Edit index.js and change the listen port to 80
 2. Edit ring.html and monitor.html socket URL to point to http://door.mydomain.tld/
-3. Launch `node index.js`
-4. Open a browser to http://door.mydomain.tld/
-
+3. run `npm install`
+4. Launch `node index.js`
+5. Open a browser to http://door.mydomain.tld/
+6. To ear when someones rings, open another one to http://door.mydomain.tld/monitor
