@@ -7,5 +7,12 @@
         "express": "latest",
         "mustache": "0.8.1"
     },
-    "author": "A.Faraino"
+    "author": "AlexFaraino",
+    "contributors": [
+        { "name": "gturri" }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fabelier/Doorbell"
+    }
 }
