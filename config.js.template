@@ -1,7 +1,7 @@
 var config = {}
 
 config.node_port = 8081;
-config.url = "http://door.fabelier.org";
+config.url = "http://localhost";
 config.logo_url = "http://fabelier.org/f/Sticker0.png";
 
 config.reverse_proxy = false;
