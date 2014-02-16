@@ -4,7 +4,8 @@
     "description": "Door bell for Fabelier",
     "dependencies": {
         "socket.io": "latest",
-        "express": "latest"
+        "express": "latest",
+        "mustache": "0.8.1"
     },
     "author": "A.Faraino"
 }

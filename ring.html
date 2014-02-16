@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<img src="http://fabelier.org/f/Sticker0.png" style="float: left; padding-right: 50px" alt="logo"><br/>
+<img src="{{logo_url}}" style="float: left; padding-right: 50px" alt="logo"><br/>
 <div id=content>
 <h1>Fabelier door bell</h1>
 Please, ring here ...and wait, please :)<br/>
@@ -19,7 +19,7 @@ Please, ring here ...and wait, please :)<br/>
 window.onload = function() {
 
     var messages = [];
-    var socket = io.connect('http://door.fabelier.org/');
+    var socket = io.connect('{{url}}');
     var bellButton = document.getElementById("bell");
 
     bellButton.onclick = function() {
