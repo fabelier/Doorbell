@@ -7,6 +7,10 @@
         "express": "latest",
         "mustache": "0.8.1"
     },
+    "devDependencies": {
+      "grunt-contrib-jshint": "~0.6.4",
+      "grunt": "~0.4.0"
+    },
     "author": "AlexFaraino",
     "contributors": [
         { "name": "gturri" }
