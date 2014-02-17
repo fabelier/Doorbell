@@ -87,8 +87,9 @@ io.sockets.on('connection', function (socket) {
 
     // When someone press 'ring' button
     socket.on('ring', function (data, fn) {
-        // Send this message to hosts. Other visitor won't receive the message
+        // Send this message to hosts and tell visitors it's actually ringing
         io.sockets.in('host').emit('message', { message: "Toc toc toc!!" });
+        io.sockets.in('visitor').emit('message', { message: "ringing..." });
     });
 });
 

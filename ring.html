@@ -12,6 +12,7 @@
 Please, ring here ...and wait, please :)<br/>
 <br/>
 <input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
+<input id="state" type="text" value=""><br/>
 
 </div>
 
@@ -21,10 +22,22 @@ window.onload = function() {
     var messages = [];
     var socket = io.connect('{{url}}');
     var bellButton = document.getElementById("bell");
+    var state = document.getElementById("state");
+
+    //Register as a visitor
+    socket.emit('type', {type: 'visitor'});
 
     bellButton.onclick = function() {
         socket.emit('ring', { message: "Someone's here!" });
     };
+
+    socket.on('message', function(data) {
+        if(data.message) {
+          state.value = data.message;
+        } else {
+          console.log("There is a problem: ", data);
+        }
+    });
 }
 
 </script>
