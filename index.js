@@ -88,15 +88,21 @@ io.sockets.on('connection', function (socket) {
     // When someone press 'ring' button
     socket.on('ring', function (data, fn) {
         // Send this message to hosts and tell visitors it's actually ringing
-        io.sockets.in('host').emit('message', { message: "Toc toc toc!!" });
-        io.sockets.in('visitor').emit('message', { message: "ringing..." });
+        sendTimestampedMessage('host', "Toc toc toc!!" );
+        sendTimestampedMessage('visitor', "ringing..." );
     });
 
     socket.on('ack', function(data, fn) {
         if ( !data.message ){
           data.message = "Coming!";
         }
-        io.sockets.in('visitor').emit('message', {message: data.message});
+        sendTimestampedMessage('visitor', data.message);
     });
 });
+
+function sendTimestampedMessage(recipients, body){
+  var now = new Date();
+  var prefix = "[" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
+  io.sockets.in(recipients).emit('message', {message: prefix + ": " + body});
+}
 
