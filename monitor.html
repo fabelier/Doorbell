@@ -21,6 +21,8 @@ State : <input id=state type=text value="deco"><br/>
   <source src="mgs_codec.mp3" type="audio/mpeg">
 </audio> 
 
+<input id="ack" type="button" value="Acknowledge" style="height: 100px; width: 200px;" />
+
 <script>
 window.onload = function() {
 
@@ -30,6 +32,10 @@ window.onload = function() {
     var content = document.getElementById("content");
     var state = document.getElementById("state");
     var ring =  document.getElementById("ring");
+
+    sendButton.onclick = function(){
+      socket.emit('ack', {message: "coming!"});
+    }
 
     // I'm a host
     socket.emit('type', { type: 'host'});

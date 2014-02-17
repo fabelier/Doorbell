@@ -91,5 +91,12 @@ io.sockets.on('connection', function (socket) {
         io.sockets.in('host').emit('message', { message: "Toc toc toc!!" });
         io.sockets.in('visitor').emit('message', { message: "ringing..." });
     });
+
+    socket.on('ack', function(data, fn) {
+        if ( !data.message ){
+          data.message = "Coming!";
+        }
+        io.sockets.in('visitor').emit('message', {message: data.message});
+    });
 });
 
