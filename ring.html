@@ -23,6 +23,7 @@ window.onload = function() {
     var socket = io.connect('{{url}}');
     var bellButton = document.getElementById("bell");
     var state = document.getElementById("state");
+    var currentlyRinging = false;
 
     //Register as a visitor
     socket.emit('type', {type: 'visitor'});
@@ -33,11 +34,25 @@ window.onload = function() {
 
     socket.on('message', function(data) {
         if(data.message) {
+          currentlyRinging = false;
           state.value = data.message;
         } else {
           console.log("There is a problem: ", data);
         }
     });
+
+    socket.on('ringing', function(data) {
+        currentlyRinging = true;
+        state.value = "Ringing";
+        setTimeout(notRingingAnymore, 10000);
+    });
+
+    function notRingingAnymore(){
+      if ( currentlyRinging ){
+        currentlyRinging = false;
+        state.value = "";
+      }
+    }
 }
 
 </script>

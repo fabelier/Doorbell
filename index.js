@@ -91,8 +91,8 @@ io.sockets.on('connection', function (socket) {
         log("Received ring message");
 
         // Send this message to hosts and tell visitors it's actually ringing
-        sendTimestampedMessage('host', "Toc toc toc!!" );
-        sendTimestampedMessage('visitor', "ringing..." );
+        sendTimestampedMessage('host', 'message', "Toc toc toc!!" );
+        sendTimestampedMessage('visitor', 'ringing', "" );
     });
 
     socket.on('ack', function(data, fn) {
@@ -100,14 +100,14 @@ io.sockets.on('connection', function (socket) {
         if ( !data.message ){
           data.message = "Coming!";
         }
-        sendTimestampedMessage('visitor', data.message);
+        sendTimestampedMessage('visitor', 'message', data.message);
     });
 });
 
-function sendTimestampedMessage(recipients, body){
+function sendTimestampedMessage(recipients, type, body){
   var now = new Date();
   var prefix = "[" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
-  io.sockets.in(recipients).emit('message', {message: prefix + ": " + body});
+  io.sockets.in(recipients).emit(type, {message: prefix + ": " + body});
 }
 
 function log(message){
