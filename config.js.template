@@ -4,6 +4,8 @@ config.node_port = 8081;
 config.url = "http://localhost";
 config.logo_url = "http://fabelier.org/f/Sticker0.png";
 
+config.verbose = false;
+
 config.reverse_proxy = false;
 config.reverse_proxy_port = 80;
 

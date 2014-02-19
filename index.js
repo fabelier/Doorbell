@@ -78,6 +78,7 @@ io.set('transports', [
 io.sockets.on('connection', function (socket) {
     // Wait for 'type' request (host or visitor)
     socket.on('type', function (data) {
+        log("A " + data.type + " joined");
         socket.join(data.type); // join the room 'host' or 'visitor'
         
         // Only 'host' have message area
@@ -87,8 +88,30 @@ io.sockets.on('connection', function (socket) {
 
     // When someone press 'ring' button
     socket.on('ring', function (data, fn) {
-        // Send this message to hosts. Other visitor won't receive the message
-        io.sockets.in('host').emit('message', { message: "Toc toc toc!!" });
+        log("Received ring message");
+
+        // Send this message to hosts and tell visitors it's actually ringing
+        sendTimestampedMessage('host', 'message', "Toc toc toc!!" );
+        sendTimestampedMessage('visitor', 'ringing', "" );
+    });
+
+    socket.on('ack', function(data, fn) {
+        log("Host is acknowledging");
+        if ( !data.message ){
+          data.message = "Coming!";
+        }
+        sendTimestampedMessage('visitor', 'message', data.message);
     });
 });
 
+function sendTimestampedMessage(recipients, type, body){
+  var now = new Date();
+  var prefix = "[" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
+  io.sockets.in(recipients).emit(type, {message: prefix + ": " + body});
+}
+
+function log(message){
+  if (config.verbose) {
+    console.log(message);
+  }
+}
