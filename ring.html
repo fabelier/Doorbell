@@ -6,13 +6,13 @@
 </head>
 <body>
 
-<img src="{{logo_url}}" style="float: left; padding-right: 50px" alt="logo"><br/>
+<img src="{{logo_url}}" style="float: left; padding-right: 50px" alt="logo">
 <div id=content>
 <h1>Fabelier door bell</h1>
 Please, ring here ...and wait, please :)<br/>
 <br/>
+<input id="state" type="text" value="" placeholder="Feedback..." disabled><br/><br/>
 <input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
-<input id="state" type="text" value=""><br/>
 
 </div>
 
@@ -24,7 +24,10 @@ window.onload = function() {
     var bellButton = document.getElementById("bell");
     var state = document.getElementById("state");
     var currentlyRinging = false;
-
+    
+    //Reset state box
+    state.value="";
+    
     //Register as a visitor
     socket.emit('type', {type: 'visitor'});
 
