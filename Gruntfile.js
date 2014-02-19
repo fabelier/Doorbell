@@ -16,17 +16,25 @@ module.exports = function(grunt) {
 				browser: true,
 				expr: true,
 				globals: {
-                   __dirname: false,
-                    Buffer: false,
-                    console: false,
+					__dirname: false,
+					Buffer: false,
+					console: false,
 					require: false
 				}
 			},
 			files: [ 'Gruntfile.js', 'index.js' ]
+		},
+
+		nodemon: {
+			dev: {
+				script: 'index.js'
+			}
 		}
 	});
 
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+	grunt.loadNpmTasks( 'grunt-nodemon' );
 
 	grunt.registerTask( 'default', [ 'jshint' ] );
+	grunt.registerTask( 'serve', ['nodemon']);
 };
