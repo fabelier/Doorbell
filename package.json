@@ -1,22 +1,24 @@
 {
-    "name": "FabelierDoorBell",
-    "version": "0.0.1",
-    "description": "Door bell for Fabelier",
-    "dependencies": {
-        "socket.io": "latest",
-        "express": "latest",
-        "mustache": "0.8.1"
-    },
-    "devDependencies": {
-      "grunt-contrib-jshint": "~0.6.4",
-      "grunt": "~0.4.0"
-    },
-    "author": "AlexFaraino",
-    "contributors": [
-        { "name": "gturri" }
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/fabelier/Doorbell"
+  "name": "FabelierDoorBell",
+  "version": "0.0.1",
+  "description": "Door bell for Fabelier",
+  "dependencies": {
+    "socket.io": "latest",
+    "express": "latest",
+    "mustache": "0.8.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt": "~0.4.0"
+  },
+  "author": "AlexFaraino",
+  "contributors": [
+    {
+      "name": "gturri"
     }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabelier/Doorbell"
+  }
 }
