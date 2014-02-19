@@ -3,6 +3,7 @@
 <head>
 <title>Fabelier Doorbell</title>
 <script src="/socket.io/socket.io.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
@@ -11,7 +12,7 @@
 <h1>Fabelier door bell</h1>
 Please, ring here ...and wait, please :)<br/>
 <br/>
-<input id="state" type="text" value="" placeholder="Feedback..." disabled><br/><br/>
+<input id="state" type="text" value="" placeholder="Feedback..." disabled style="visibility: hidden;"><br/><br/>
 <input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
 
 </div>
@@ -47,6 +48,7 @@ window.onload = function() {
     socket.on('ringing', function(data) {
         currentlyRinging = true;
         state.value = "Ringing";
+        state.style.visibility = "visible";
         setTimeout(notRingingAnymore, 10000);
     });
 
