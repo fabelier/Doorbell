@@ -7,7 +7,6 @@ Socket.io website was a great help. Thanks to the team :)
 ---
 ### TODO
 * Feedback for the visitor "someone is on his way to open the door"
-* Add a password field to ring.html
 
 ### Try it on door.mydomain.tld
 1. Run `npm install` once and for all, the retrieve the neede node packages
