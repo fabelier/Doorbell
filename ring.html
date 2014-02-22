@@ -14,42 +14,62 @@ Please, ring here ...and wait, please :)<br/>
 <input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
 <input id="state" type="text" value=""><br/>
 
+{{#password}}
+Password: <input id="password" type="password"/><br/>
+{{/password}}
+
 </div>
 
 <script>
+
+StateEnum = {
+  EMPTY: 0,
+  RINGING: 1,
+  INVALID_PASSWORD: 2,
+  COMING: 3
+}
+
 window.onload = function() {
 
     var messages = [];
+    var currentState = StateEnum.EMPTY;
     var socket = io.connect('{{url}}');
     var bellButton = document.getElementById("bell");
     var state = document.getElementById("state");
     var currentlyRinging = false;
+    var password = document.getElementById("password");
 
     //Register as a visitor
     socket.emit('type', {type: 'visitor'});
 
     bellButton.onclick = function() {
-        socket.emit('ring', { message: "Someone's here!" });
+        resetStateField();
+        socket.emit('ring', { password: password.value });
     };
 
     socket.on('message', function(data) {
         if(data.message) {
-          currentlyRinging = false;
+          currentState = StateEnum.COMING;
           state.value = data.message;
         } else {
           console.log("There is a problem: ", data);
         }
     });
 
-    socket.on('ringing', function(data) {
-        currentlyRinging = true;
-        state.value = "Ringing";
-        setTimeout(notRingingAnymore, 10000);
+    socket.on('bad_password', function(data) {
+        current_state = StateEnum.INVALID_PASSWORD;
+        state.value = "Invalid password";
     });
 
-    function notRingingAnymore(){
-      if ( currentlyRinging ){
-        currentlyRinging = false;
+    socket.on('ringing', function(data) {
+        currentState = StateEnum.RINGING;
+        state.value = "Ringing";
+        setTimeout(resetStateField, 10000);
+    });
+
+    function resetStateField(){
+      if ( currentState != StateEnum.COMING ){
+        currentState = StateEnum.EMPTY;
         state.value = "";
       }
     }
