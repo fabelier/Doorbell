@@ -90,6 +90,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('ring', function (data, fn) {
         if ( ! verifiesPassword(data) ){
           log("Ring message doesn't validate the password");
+          socket.emit('bad_password');
           return;
         }
         log("Received ring message");
