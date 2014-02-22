@@ -14,6 +14,8 @@ Please, ring here ...and wait, please :)<br/>
 <input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
 <input id="state" type="text" value=""><br/>
 
+Password: <input id="password" type="password"/><br/>
+
 </div>
 
 <script>
@@ -24,12 +26,13 @@ window.onload = function() {
     var bellButton = document.getElementById("bell");
     var state = document.getElementById("state");
     var currentlyRinging = false;
+    var password = document.getElementById("password");
 
     //Register as a visitor
     socket.emit('type', {type: 'visitor'});
 
     bellButton.onclick = function() {
-        socket.emit('ring', { message: "Someone's here!" });
+        socket.emit('ring', { password: password.value });
     };
 
     socket.on('message', function(data) {
