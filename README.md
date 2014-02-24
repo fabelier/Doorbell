@@ -19,7 +19,7 @@ Easy:
 1. To ear when someones rings, open another one to http://my.host/monitor
 
 ### For developers
-* If you have [Grunt]http://gruntjs.com/), instead of running `node index.js`, you 
+* If you have [Grunt](http://gruntjs.com/), instead of running `node index.js`, you 
 should run `grunt serve`. It will reload the node server whenever a file is modified
 
 * To validate your code, you can run `grunt`. It will check the code using jshint
