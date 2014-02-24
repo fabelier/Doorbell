@@ -3,16 +3,17 @@
 <head>
 <title>Fabelier Doorbell</title>
 <script src="/socket.io/socket.io.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-<img src="{{logo_url}}" style="float: left; padding-right: 50px" alt="logo"><br/>
+<img src="{{logo_url}}" style="float: left; padding-right: 50px" alt="logo">
 <div id=content>
 <h1>Fabelier door bell</h1>
-Please, ring here ...and wait, please :)<br/>
+<p>Please, ring here ...and wait, please :)</p>
 <br/>
+<div id="state" style="visibility: hidden;">Feedback...</div><br/>
 <input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
-<input id="state" type="text" value=""><br/>
 
 </div>
 
@@ -24,7 +25,10 @@ window.onload = function() {
     var bellButton = document.getElementById("bell");
     var state = document.getElementById("state");
     var currentlyRinging = false;
-
+    
+    //Reset state box
+    state.value="";
+    
     //Register as a visitor
     socket.emit('type', {type: 'visitor'});
 
@@ -35,7 +39,8 @@ window.onload = function() {
     socket.on('message', function(data) {
         if(data.message) {
           currentlyRinging = false;
-          state.value = data.message;
+          state.innerHTML = data.message;
+          state.style.visibility = "visible";
         } else {
           console.log("There is a problem: ", data);
         }
@@ -43,14 +48,16 @@ window.onload = function() {
 
     socket.on('ringing', function(data) {
         currentlyRinging = true;
-        state.value = "Ringing";
+        state.innerHTML = "== Ringing! ==";
+        state.style.visibility = "visible";
         setTimeout(notRingingAnymore, 10000);
     });
 
     function notRingingAnymore(){
       if ( currentlyRinging ){
         currentlyRinging = false;
-        state.value = "";
+        state.innerHTML = "&nbsp";
+        state.style.visibility = "hidden";
       }
     }
 }
