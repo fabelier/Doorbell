@@ -6,7 +6,6 @@ Socket.io website was a great help. Thanks to the team :)
 
 ---
 ### TODO
-* Feedback for the visitor "someone is on his way to open the door"
 * Add a password field to ring.html
 
 ### Try it on door.mydomain.tld
@@ -15,3 +14,9 @@ Socket.io website was a great help. Thanks to the team :)
 1. Launch `node index.js`
 1. Open a browser to http://my.host/
 1. To ear when someones rings, open another one to http://my.host/monitor
+
+### For developers
+* If you have [Grunt]http://gruntjs.com/), instead of running `node index.js`, you 
+should run `grunt serve`. It will reload the node server whenever a file is modified
+
+* To validate your code, you can run `grunt`. It will check the code using jshint

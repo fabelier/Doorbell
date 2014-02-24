@@ -2,7 +2,7 @@
 var express = require("express");
 var fs = require("fs");
 var mustache = require("mustache");
-mustache.escape = function(string){return string;}
+mustache.escape = function(string){return string;};
 var config = getConfig();
 var app = express();
 var port = config.node_port;
@@ -49,7 +49,7 @@ function sendTemplatedFile(req, res, filename){
        res.set('Content-Type', 'text/html');
        if (err) res.send(err);
        res.send(mustache.render(data.toString(), {url: url, logo_url: config.logo_url}));
-    })
+    });
 }
 
 // Static files in /public
@@ -68,9 +68,9 @@ io.set('log level', 1);                    // reduce logging
 
 io.set('transports', [
 //    'websocket' // I use Apache with mod proxy. Websocket will fail.
-  , 'htmlfile'
-  , 'xhr-polling'
-  , 'jsonp-polling'
+  'htmlfile',
+  'xhr-polling',
+  'jsonp-polling'
 ]);
 // End of config
 
@@ -82,7 +82,7 @@ io.sockets.on('connection', function (socket) {
         socket.join(data.type); // join the room 'host' or 'visitor'
         
         // Only 'host' have message area
-        if(data.type == 'host')
+        if(data.type === 'host')
            socket.emit('message', { message: 'Welcome, Fabelier =)' });
     });
 
