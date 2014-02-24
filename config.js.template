@@ -9,5 +9,8 @@ config.verbose = false;
 config.reverse_proxy = false;
 config.reverse_proxy_port = 80;
 
+config.use_password = false;
+config.password = 123456;
+
 module.exports = config;
 

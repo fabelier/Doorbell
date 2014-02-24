@@ -11,34 +11,44 @@
 <div id=content>
 <h1>Fabelier door bell</h1>
 <p>Please, ring here ...and wait, please :)</p>
-<br/>
 <div id="state" style="visibility: hidden;">Feedback...</div><br/>
+{{#password}}
+Password: <input id="password" type="password"/><br/><br/>
+{{/password}}
 <input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
 
 </div>
 
 <script>
+
+StateEnum = {
+  EMPTY: 0,
+  RINGING: 1,
+  INVALID_PASSWORD: 2,
+  COMING: 3
+}
+
 window.onload = function() {
 
     var messages = [];
+    var currentState = StateEnum.EMPTY;
     var socket = io.connect('{{url}}');
     var bellButton = document.getElementById("bell");
     var state = document.getElementById("state");
     var currentlyRinging = false;
-    
-    //Reset state box
-    state.value="";
-    
+    var password = document.getElementById("password");
+
     //Register as a visitor
     socket.emit('type', {type: 'visitor'});
 
     bellButton.onclick = function() {
-        socket.emit('ring', { message: "Someone's here!" });
+        resetStateField();
+        socket.emit('ring', { password: (password === null) ? "" : password.value });
     };
 
     socket.on('message', function(data) {
         if(data.message) {
-          currentlyRinging = false;
+          currentState = StateEnum.COMING;
           state.innerHTML = data.message;
           state.style.visibility = "visible";
         } else {
@@ -46,16 +56,22 @@ window.onload = function() {
         }
     });
 
-    socket.on('ringing', function(data) {
-        currentlyRinging = true;
-        state.innerHTML = "== Ringing! ==";
+    socket.on('bad_password', function(data) {
+        current_state = StateEnum.INVALID_PASSWORD;
+        state.innerHTML = "Invalid password";
         state.style.visibility = "visible";
-        setTimeout(notRingingAnymore, 10000);
     });
 
-    function notRingingAnymore(){
-      if ( currentlyRinging ){
-        currentlyRinging = false;
+    socket.on('ringing', function(data) {
+        currentState = StateEnum.RINGING;
+        state.innerHTML = "== Ringing! ==";
+        state.style.visibility = "visible";
+        setTimeout(resetStateField, 10000);
+    });
+
+    function resetStateField(){
+      if ( currentState != StateEnum.COMING ){
+        currentState = StateEnum.EMPTY;
         state.innerHTML = "&nbsp";
         state.style.visibility = "hidden";
       }

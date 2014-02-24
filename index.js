@@ -48,7 +48,7 @@ function sendTemplatedFile(req, res, filename){
     fs.readFile(filename, function(err, data){
        res.set('Content-Type', 'text/html');
        if (err) res.send(err);
-       res.send(mustache.render(data.toString(), {url: url, logo_url: config.logo_url}));
+       res.send(mustache.render(data.toString(), {url: url, logo_url: config.logo_url, password: config.use_password}));
     });
 }
 
@@ -88,6 +88,11 @@ io.sockets.on('connection', function (socket) {
 
     // When someone press 'ring' button
     socket.on('ring', function (data, fn) {
+        if ( ! verifiesPassword(data) ){
+          log("Ring message doesn't validate the password");
+          socket.emit('bad_password');
+          return;
+        }
         log("Received ring message");
 
         // Send this message to hosts and tell visitors it's actually ringing
@@ -103,6 +108,14 @@ io.sockets.on('connection', function (socket) {
         sendTimestampedMessage('visitor', 'message', data.message);
     });
 });
+
+function verifiesPassword(data){
+  if ( ! config.use_password ){
+    return true;
+  }
+
+  return data.password && data.password === config.password.toString();
+}
 
 function sendTimestampedMessage(recipients, type, body){
   var now = new Date();

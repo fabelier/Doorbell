@@ -8,10 +8,7 @@ Easy:
 * When a visitor arrives, he'll just has to point his smartphone to the url you gave him, and ring. Your browser will warn you someone is at the door.
 
 ---
-### TODO
-* Add a password field to ring.html
-
-### Try it on door.mydomain.tld
+### Try it
 1. Run `npm install` once and for all, the retrieve the neede node packages
 1. copy `config.js.template` to  `config.js` and edit it to fit your needs
 1. Launch `node index.js`
