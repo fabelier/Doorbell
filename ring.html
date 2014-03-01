@@ -17,6 +17,10 @@ Password: <input id="password" type="password"/><br/><br/>
 {{/password}}
 <input id=bell type=button value="The bell" style="height: 100px; width: 200px;" >
 
+{{#source_qrcode}}
+<div>Tried to ring with a qr code: {{qr_state}}</div>
+{{/source_qrcode}}
+
 </div>
 
 <script>
