@@ -58,7 +58,7 @@ function sendTemplatedFile(req, res, filename, optionalJson){
     fs.readFile(filename, function(err, data){
        res.set('Content-Type', 'text/html');
        if (err) res.send(err);
-       res.send(mustache.render(data.toString(), mergeJSON({url: url, logo_url: config.logo_url, password: config.use_password}, optionalJson)));
+       res.send(mustache.render(data.toString(), mergeJSON({url: url, logo_url: config.logo_url, password: config.use_password, config.place_name: config.place_name}, optionalJson)));
     });
 }
 
