@@ -13,7 +13,10 @@ function getConfig(){
     synchronousCopy("config.js.template", "config.js");
     console.log("Copying default config file. You may want to adapt config.js");
   }
-  return require("./config.js");
+
+  var exhaustiveConfig = require("./config.js.template");
+  var personalConfig = require("./config.js");
+  return mergeJSON(exhaustiveConfig, personalConfig);
 }
 
 function synchronousCopy(srcFile, destFile){
@@ -82,7 +85,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Socket.io init
 var io = require('socket.io').listen(app.listen(port));
-console.log("Listening on port " + port);
+log("Listening on port " + port, true);
 
 // Socket.io config
 io.enable('browser client minification');  // send minified client
@@ -147,13 +150,16 @@ function verifiesPassword(password){
 }
 
 function sendTimestampedMessage(recipients, type, body){
-  var now = new Date();
-  var prefix = "[" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
-  io.sockets.in(recipients).emit(type, {message: prefix + ": " + body});
+  io.sockets.in(recipients).emit(type, {message: "[" + nowToString() + "]: " + body});
 }
 
-function log(message){
-  if (config.verbose) {
-    console.log(message);
+function log(message, forceVerbose){
+  if (forceVerbose === true || config.verbose) {
+    console.log(nowToString() + ": " + message);
   }
+}
+
+function nowToString(){
+  var now = new Date();
+  return "[" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
 }
