@@ -13,7 +13,10 @@ function getConfig(){
     synchronousCopy("config.js.template", "config.js");
     console.log("Copying default config file. You may want to adapt config.js");
   }
-  return require("./config.js");
+
+  var exhaustiveConfig = require("./config.js.template");
+  var personalConfig = require("./config.js");
+  return mergeJSON(exhaustiveConfig, personalConfig);
 }
 
 function synchronousCopy(srcFile, destFile){
