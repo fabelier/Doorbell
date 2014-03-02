@@ -44,12 +44,36 @@ app.get("/monitor", function(req, res){
     sendTemplatedFile(req, res, "monitor.html");
 });
 
-function sendTemplatedFile(req, res, filename){
+app.get("/qr", function(req, res){
+    var password = req.query.password;
+    log("A QR code has been scanned. Password is " + password);
+    var state = tryToRing(null, password) ? "Success" : "Failed. Password may have changed";
+    sendTemplatedFile(req, res, "ring.html", {source_qrcode: true, qr_state: state});
+});
+
+function sendTemplatedFile(req, res, filename, optionalJson){
     fs.readFile(filename, function(err, data){
        res.set('Content-Type', 'text/html');
        if (err) res.send(err);
-       res.send(mustache.render(data.toString(), {url: url, logo_url: config.logo_url, password: config.use_password}));
+       res.send(mustache.render(data.toString(), mergeJSON({url: url, logo_url: config.logo_url, password: config.use_password}, optionalJson)));
     });
+}
+
+function mergeJSON(overridedJson, overridingJson){
+  if ( !defined(overridedJson) && !defined(overridingJson) ){
+    return {};
+  }
+  if ( !defined(overridedJson) ){
+    return overridingJson;
+  }
+  if ( !defined(overridingJson) ){
+    return overridedJson;
+  }
+  return JSON.parse((JSON.stringify(overridedJson) + JSON.stringify(overridingJson)).replace(/}{/g,","));
+}
+
+function defined(obj){
+  return typeof obj  !== 'undefined' && obj;
 }
 
 // Static files in /public
@@ -88,16 +112,7 @@ io.sockets.on('connection', function (socket) {
 
     // When someone press 'ring' button
     socket.on('ring', function (data, fn) {
-        if ( ! verifiesPassword(data) ){
-          log("Ring message doesn't validate the password");
-          socket.emit('bad_password');
-          return;
-        }
-        log("Received ring message");
-
-        // Send this message to hosts and tell visitors it's actually ringing
-        sendTimestampedMessage('host', 'message', "Toc toc toc!!" );
-        sendTimestampedMessage('visitor', 'ringing', "" );
+        tryToRing(socket, data.password);
     });
 
     socket.on('ack', function(data, fn) {
@@ -109,12 +124,26 @@ io.sockets.on('connection', function (socket) {
     });
 });
 
-function verifiesPassword(data){
+function tryToRing(socket, password){
+  if ( ! verifiesPassword(password) ){
+    log("Ring message doesn't validate the password");
+    if ( socket ) { socket.emit('bad_password'); }
+    return false;
+  }
+  log("Received ring message");
+
+  // Send this message to hosts and tell visitors it's actually ringing
+  sendTimestampedMessage('host', 'message', "Toc toc toc!!" );
+  sendTimestampedMessage('visitor', 'ringing', "" );
+  return true;
+}
+
+function verifiesPassword(password){
   if ( ! config.use_password ){
     return true;
   }
 
-  return data.password && data.password === config.password.toString();
+  return password && password === config.password.toString();
 }
 
 function sendTimestampedMessage(recipients, type, body){
