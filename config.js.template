@@ -1,14 +1,26 @@
 var config = {}
 
+//The name of your place / your group
+//Will be display on the web pages
+config.place_name = "Local user group";
+
+//On which port Node will listen
 config.node_port = 8081;
+
+//Url on which visitor are supposed to ring (don't specify a port here)
 config.url = "http://localhost";
+
+//Logo which will be displayed on the web pages
 config.logo_url = "http://fabelier.org/f/Sticker0.png";
 
+//Should the server be talkative on the console
 config.verbose = false;
 
+//Potential reverse proxy parameters
 config.reverse_proxy = false;
 config.reverse_proxy_port = 80;
 
+//Should only visitors with the password be able to ring
 config.use_password = false;
 config.password = 123456;
 
