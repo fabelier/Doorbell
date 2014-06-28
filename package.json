@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "Door bell for Fabelier",
   "dependencies": {
-    "socket.io": "latest",
-    "express": "latest",
+    "socket.io": "0.9",
+    "express": "3.4.4",
     "mustache": "0.8.1"
   },
   "devDependencies": {

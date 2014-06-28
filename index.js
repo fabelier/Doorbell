@@ -58,7 +58,7 @@ function sendTemplatedFile(req, res, filename, optionalJson){
     fs.readFile(filename, function(err, data){
        res.set('Content-Type', 'text/html');
        if (err) res.send(err);
-       res.send(mustache.render(data.toString(), mergeJSON({url: url, logo_url: config.logo_url, password: config.use_password, config.place_name: config.place_name}, optionalJson)));
+       res.send(mustache.render(data.toString(), mergeJSON({url: url, logo_url: config.logo_url, password: config.use_password, place_name: config.place_name}, optionalJson)));
     });
 }
 
@@ -107,7 +107,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('type', function (data) {
         log("A " + data.type + " joined");
         socket.join(data.type); // join the room 'host' or 'visitor'
-        
+
         // Only 'host' have message area
         if(data.type === 'host')
            socket.emit('message', { message: 'Welcome, Fabelier =)' });
