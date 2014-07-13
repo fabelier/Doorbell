@@ -117,7 +117,7 @@ io.sockets.on('connection', function (socket) {
 
         // Only 'host' have message area
         if(data.type === 'host') {
-           socket.emit('message', { message: 'Welcome, Freespace =)' });
+           socket.emit('message', { message: 'Welcome, ' + config.place_name + ' =)' });
         }
     });
 

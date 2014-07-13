@@ -24,44 +24,44 @@ State : <input id=state type=text value="deco"><br/>
 <input id="ack" type="button" value="Acknowledge" style="height: 100px; width: 200px;" />
 
 <script>
-    'use strict';
+  'use strict';
 
-    window.onload = function() {
+  window.onload = function() {
 
-    var messages = [];
-    var socket = io.connect('{{url}}');
-    var sendButton = document.getElementById("ack");
-    var content = document.getElementById("content");
-    var state = document.getElementById("state");
-    var ring =  document.getElementById("ring");
+    var messages = [],
+        socket = io.connect('{{url}}'),
+        sendButton = document.getElementById("ack"),
+        content = document.getElementById("content"),
+        state = document.getElementById("state"),
+        ring =  document.getElementById("ring");
 
-    sendButton.onclick = function(){
-      socket.emit('ack', {message: "coming!"});
+    sendButton.onclick = function() {
+      socket.emit('ack', { message: "coming!" });
     }
 
     // I'm a host
-    socket.emit('type', { type: 'host'});
+    socket.emit('type', { type: 'host' });
 
     // Message to display
     socket.on('message', function (data) {
-        if(data.message) {
-            messages.push(data.message);
-            var html = '';
-            for(var i=0; i<messages.length; i++) {
-                html += messages[i] + '<br />';
-            }
-            content.innerHTML = html;
-            ring.play(); // Ring !
-        } else {
-            console.log("There is a problem:", data);
+      if(data.message) {
+        messages.push(data.message);
+        var html = '';
+        for(var i = 0; i < messages.length; i++) {
+          html += messages[i] + '<br />';
         }
+        content.innerHTML = html;
+        ring.play(); // Ring !
+      } else {
+        console.log("There is a problem:", data);
+      }
     });
 
     // Connection state
     socket.on('connect', function () {
-        state.value = "connected !";
-        state.style = "background-color: green;";
-        ring.loop=false;
+      state.value = "connected !";
+      state.style = "background-color: green;";
+      ring.loop = false;
     });
 
     socket.on('connecting', function () {
@@ -69,13 +69,12 @@ State : <input id=state type=text value="deco"><br/>
     });
 
     socket.on('disconnect', function() {
-        state.value = "disconnected !";
-        state.style = "background-color: red;";
-        ring.loop=true; // to notice disconnection
-	ring.play();
+      state.value = "disconnected !";
+      state.style = "background-color: red;";
+      ring.loop = true; // to notice disconnection
+      ring.play();
     });
-}
-
+  }
 </script>
 </body>
 </html>
