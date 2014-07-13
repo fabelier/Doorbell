@@ -1,3 +1,5 @@
+'use strict';
+
 var config = {}
 
 //The name of your place / your group

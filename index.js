@@ -1,3 +1,4 @@
+'use strict';
 // Init Express Framework
 var express = require("express");
 var fs = require("fs");

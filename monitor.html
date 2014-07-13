@@ -3,7 +3,7 @@
 <head>
 <title>{{place_name}} Doorbell</title>
 <script src="/socket.io/socket.io.js"></script>
- 
+
 </head>
 <body>
 <h1>{{place_name}} door bell Monitor</h1>
@@ -19,12 +19,14 @@ State : <input id=state type=text value="deco"><br/>
 <audio controls id=ring>
   <source src="mgs_codec.ogg" type="audio/ogg">
   <source src="mgs_codec.mp3" type="audio/mpeg">
-</audio> 
+</audio>
 
 <input id="ack" type="button" value="Acknowledge" style="height: 100px; width: 200px;" />
 
 <script>
-window.onload = function() {
+    'use strict';
+
+    window.onload = function() {
 
     var messages = [];
     var socket = io.connect('{{url}}');
