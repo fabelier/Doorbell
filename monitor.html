@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{{place_name}} Doorbell</title>
+<meta charset="utf-8">
 <script src="/socket.io/socket.io.js"></script>
- 
+<title>{{place_name}} Doorbell</title>
 </head>
 <body>
 <h1>{{place_name}} door bell Monitor</h1>
@@ -19,47 +19,49 @@ State : <input id=state type=text value="deco"><br/>
 <audio controls id=ring>
   <source src="mgs_codec.ogg" type="audio/ogg">
   <source src="mgs_codec.mp3" type="audio/mpeg">
-</audio> 
+</audio>
 
 <input id="ack" type="button" value="Acknowledge" style="height: 100px; width: 200px;" />
 
 <script>
-window.onload = function() {
+  'use strict';
 
-    var messages = [];
-    var socket = io.connect('{{url}}');
-    var sendButton = document.getElementById("ack");
-    var content = document.getElementById("content");
-    var state = document.getElementById("state");
-    var ring =  document.getElementById("ring");
+  window.onload = function() {
 
-    sendButton.onclick = function(){
-      socket.emit('ack', {message: "coming!"});
+    var messages = [],
+        socket = io.connect('{{url}}'),
+        sendButton = document.getElementById("ack"),
+        content = document.getElementById("content"),
+        state = document.getElementById("state"),
+        ring =  document.getElementById("ring");
+
+    sendButton.onclick = function() {
+      socket.emit('ack', { message: "coming!" });
     }
 
     // I'm a host
-    socket.emit('type', { type: 'host'});
+    socket.emit('type', { type: 'host' });
 
     // Message to display
     socket.on('message', function (data) {
-        if(data.message) {
-            messages.push(data.message);
-            var html = '';
-            for(var i=0; i<messages.length; i++) {
-                html += messages[i] + '<br />';
-            }
-            content.innerHTML = html;
-            ring.play(); // Ring !
-        } else {
-            console.log("There is a problem:", data);
+      if(data.message) {
+        messages.push(data.message);
+        var html = '';
+        for(var i = 0; i < messages.length; i++) {
+          html += messages[i] + '<br />';
         }
+        content.innerHTML = html;
+        ring.play(); // Ring !
+      } else {
+        console.log("There is a problem:", data);
+      }
     });
 
     // Connection state
     socket.on('connect', function () {
-        state.value = "connected !";
-        state.style = "background-color: green;";
-        ring.loop=false;
+      state.value = "connected !";
+      state.style = "background-color: green;";
+      ring.loop = false;
     });
 
     socket.on('connecting', function () {
@@ -67,13 +69,12 @@ window.onload = function() {
     });
 
     socket.on('disconnect', function() {
-        state.value = "disconnected !";
-        state.style = "background-color: red;";
-        ring.loop=true; // to notice disconnection
-	ring.play();
+      state.value = "disconnected !";
+      state.style = "background-color: red;";
+      ring.loop = true; // to notice disconnection
+      ring.play();
     });
-}
-
+  }
 </script>
 </body>
 </html>

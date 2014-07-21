@@ -1,12 +1,14 @@
+'use strict';
 // Init Express Framework
-var express = require("express");
-var fs = require("fs");
-var mustache = require("mustache");
+var express = require("express"),
+    fs = require("fs"),
+    mustache = require("mustache"),
+    config = getConfig(),
+    app = express(),
+    port = config.node_port,
+    url = config.url + ":" + (config.reverse_proxy ? config.reverse_proxy_port : port);
+
 mustache.escape = function(string){return string;};
-var config = getConfig();
-var app = express();
-var port = config.node_port;
-var url = config.url + ":" + (config.reverse_proxy ? config.reverse_proxy_port : port);
 
 function getConfig(){
   if (!fs.existsSync("config.js")) {
@@ -14,19 +16,19 @@ function getConfig(){
     console.log("Copying default config file. You may want to adapt config.js");
   }
 
-  var exhaustiveConfig = require("./config.js.template");
-  var personalConfig = require("./config.js");
+  var exhaustiveConfig = require("./config.js.template"),
+      personalConfig = require("./config.js");
   return mergeJSON(exhaustiveConfig, personalConfig);
 }
 
 function synchronousCopy(srcFile, destFile){
-  var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
-  BUF_LENGTH = 64 * 1024;
-  buff = new Buffer(BUF_LENGTH);
-  fdr = fs.openSync(srcFile, "r");
-  fdw = fs.openSync(destFile, "w");
-  bytesRead = 1;
-  pos = 0;
+  var BUF_LENGTH = 64 * 1024,
+      buff = new Buffer(BUF_LENGTH),
+      bytesRead = 1,
+      fdr = fs.openSync(srcFile, "r"),
+      fdw = fs.openSync(destFile, "w"),
+      pos = 0;
+
   while (bytesRead > 0) {
     bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
     fs.writeSync(fdw, buff, 0, bytesRead);
@@ -48,34 +50,40 @@ app.get("/monitor", function(req, res){
 });
 
 app.get("/qr", function(req, res){
-    var password = req.query.password;
+    var password = req.query.password,
+        state = tryToRing(null, password) ? "Success" : "Failed. Password may have changed";
+
     log("A QR code has been scanned. Password is " + password);
-    var state = tryToRing(null, password) ? "Success" : "Failed. Password may have changed";
     sendTemplatedFile(req, res, "ring.html", {source_qrcode: true, qr_state: state});
 });
 
-function sendTemplatedFile(req, res, filename, optionalJson){
+function sendTemplatedFile(req, res, filename, optionalJson) {
     fs.readFile(filename, function(err, data){
        res.set('Content-Type', 'text/html');
-       if (err) res.send(err);
-       res.send(mustache.render(data.toString(), mergeJSON({url: url, logo_url: config.logo_url, password: config.use_password, place_name: config.place_name}, optionalJson)));
+       if (err) { res.send(err); }
+       res.send(mustache.render(data.toString(),
+               mergeJSON({url: url,
+                   logo_url: config.logo_url,
+               password: config.use_password,
+               place_name: config.place_name},
+               optionalJson)));
     });
 }
 
-function mergeJSON(overridedJson, overridingJson){
-  if ( !defined(overridedJson) && !defined(overridingJson) ){
+function mergeJSON(overridedJson, overridingJson) {
+  if (!defined(overridedJson) && !defined(overridingJson)) {
     return {};
   }
-  if ( !defined(overridedJson) ){
+  if (!defined(overridedJson)) {
     return overridingJson;
   }
-  if ( !defined(overridingJson) ){
+  if (!defined(overridingJson)) {
     return overridedJson;
   }
   return JSON.parse((JSON.stringify(overridedJson) + JSON.stringify(overridingJson)).replace(/}{/g,","));
 }
 
-function defined(obj){
+function defined(obj) {
   return typeof obj  !== 'undefined' && obj;
 }
 
@@ -92,7 +100,6 @@ io.enable('browser client minification');  // send minified client
 io.enable('browser client etag');          // apply etag caching logic based on version number
 io.enable('browser client gzip');          // gzip the file
 io.set('log level', 1);                    // reduce logging
-
 io.set('transports', [
 //    'websocket' // I use Apache with mod proxy. Websocket will fail.
   'htmlfile',
@@ -109,8 +116,9 @@ io.sockets.on('connection', function (socket) {
         socket.join(data.type); // join the room 'host' or 'visitor'
 
         // Only 'host' have message area
-        if(data.type === 'host')
-           socket.emit('message', { message: 'Welcome, Fabelier =)' });
+        if(data.type === 'host') {
+           socket.emit('message', { message: 'Welcome, ' + config.place_name + ' =)' });
+        }
     });
 
     // When someone press 'ring' button
@@ -128,7 +136,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 function tryToRing(socket, password){
-  if ( ! verifiesPassword(password) ){
+  if (!verifiesPassword(password)) {
     log("Ring message doesn't validate the password");
     if ( socket ) { socket.emit('bad_password'); }
     return false;
@@ -141,25 +149,24 @@ function tryToRing(socket, password){
   return true;
 }
 
-function verifiesPassword(password){
-  if ( ! config.use_password ){
+function verifiesPassword(password) {
+  if (! config.use_password) {
     return true;
   }
-
   return password && password === config.password.toString();
 }
 
-function sendTimestampedMessage(recipients, type, body){
-  io.sockets.in(recipients).emit(type, {message: "[" + nowToString() + "]: " + body});
+function sendTimestampedMessage(recipients, type, body) {
+  io.sockets.in(recipients).emit(type, { message: "[" + nowToString() + "]: " + body });
 }
 
-function log(message, forceVerbose){
+function log(message, forceVerbose) {
   if (forceVerbose === true || config.verbose) {
     console.log(nowToString() + ": " + message);
   }
 }
 
-function nowToString(){
+function nowToString() {
   var now = new Date();
   return "[" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "]";
 }

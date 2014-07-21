@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{{place_name}} Doorbell</title>
-<script src="/socket.io/socket.io.js"></script>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/socket.io/socket.io.js"></script>
+<title>{{place_name}} Doorbell</title>
 </head>
 <body>
 
@@ -24,64 +25,63 @@ Password: <input id="password" type="password"/><br/><br/>
 </div>
 
 <script>
+  'use strict';
 
-StateEnum = {
-  EMPTY: 0,
-  RINGING: 1,
-  INVALID_PASSWORD: 2,
-  COMING: 3
-}
+  var StateEnum = {
+    EMPTY: 0,
+    RINGING: 1,
+    INVALID_PASSWORD: 2,
+    COMING: 3
+  }
 
-window.onload = function() {
-
-    var messages = [];
-    var currentState = StateEnum.EMPTY;
-    var socket = io.connect('{{url}}');
-    var bellButton = document.getElementById("bell");
-    var state = document.getElementById("state");
-    var currentlyRinging = false;
-    var password = document.getElementById("password");
+  window.onload = function() {
+    var messages = [],
+        currentState = StateEnum.EMPTY,
+        socket = io.connect('{{url}}'),
+        bellButton = document.getElementById("bell"),
+        state = document.getElementById("state"),
+        currentlyRinging = false,
+        password = document.getElementById("password");
 
     //Register as a visitor
-    socket.emit('type', {type: 'visitor'});
+    socket.emit('type', { type: 'visitor' });
 
     bellButton.onclick = function() {
-        resetStateField();
-        socket.emit('ring', { password: (password === null) ? "" : password.value });
+      resetStateField();
+      socket.emit('ring', { password: (password === null) ? "" : password.value });
     };
 
     socket.on('message', function(data) {
-        if(data.message) {
-          currentState = StateEnum.COMING;
-          state.innerHTML = data.message;
-          state.style.visibility = "visible";
-        } else {
-          console.log("There is a problem: ", data);
-        }
+      if(data.message) {
+        currentState = StateEnum.COMING;
+        state.innerHTML = data.message;
+        state.style.visibility = "visible";
+      } else {
+        console.log("There is a problem: ", data);
+      }
     });
 
     socket.on('bad_password', function(data) {
-        current_state = StateEnum.INVALID_PASSWORD;
-        state.innerHTML = "Invalid password";
-        state.style.visibility = "visible";
+      current_state = StateEnum.INVALID_PASSWORD;
+      state.innerHTML = "Invalid password";
+      state.style.visibility = "visible";
     });
 
     socket.on('ringing', function(data) {
-        currentState = StateEnum.RINGING;
-        state.innerHTML = "== Ringing! ==";
-        state.style.visibility = "visible";
-        setTimeout(resetStateField, 10000);
+      currentState = StateEnum.RINGING;
+      state.innerHTML = "== Ringing! ==";
+      state.style.visibility = "visible";
+      setTimeout(resetStateField, 10000);
     });
 
-    function resetStateField(){
-      if ( currentState != StateEnum.COMING ){
+    function resetStateField() {
+      if (currentState != StateEnum.COMING) {
         currentState = StateEnum.EMPTY;
         state.innerHTML = "&nbsp";
         state.style.visibility = "hidden";
       }
     }
-}
-
+  }
 </script>
 </body>
 </html>
